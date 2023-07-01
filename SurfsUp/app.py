@@ -104,12 +104,9 @@ def tobs():
 def start_date(start):
 
     session = Session(engine)
-    def calc_temp(start):
-        return session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
+    temp_start = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
                 filter(Measurement.date >= start).all()
-
     session.close()
-    temp_start = calc_temp(start)
     t_temp= list(np.ravel(temp_start))
 
     t_min = t_temp[0]
@@ -123,15 +120,12 @@ def start_date(start):
 def start_end_date(start,end):
 
     session = Session(engine)
-    def calc_temp(start,end):
-        return session.query(func.min(Measurement.tobs), \
+    temp_end = session.query(func.min(Measurement.tobs), \
                          func.avg(Measurement.tobs), \
                          func.max(Measurement.tobs)).\
                          filter(Measurement.date >= start).\
                          filter(Measurement.date <= end).all()
-
     session.close()
-    temp_end = calc_temp(start, end)
     t_temp= list(np.ravel(temp_end))
 
     t_min = t_temp[0]
